@@ -13,7 +13,7 @@ public class Mouvment : MonoBehaviour
     public const float maxFieldOfView=100f;
     public const float fovAcceleration = 0.03f;
     public const float constVelocity = -2f;
-    public const float constJump = -2f;
+    public  float constJump = -2f;
     public const float zero = 0;
     public const float staminaCost = 0.1f;
     public const float breakSpeed = 4f;
@@ -22,15 +22,18 @@ public class Mouvment : MonoBehaviour
     public CharacterController controller;
     public float gravity = -15f;
     public float jumpHeight = 5f;
+    public float trampoJumpHeight;
+
     public Transform groundCheck;
 
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     public LayerMask trampoMask;
-    Vector3 velocity;
+    public Vector3 velocity;
     bool isGrounded;
     bool isTrampoline;
     bool candoublejump;
+    public float highestHeightBeforeGround=0f;
     private void Start() {
         speed = minSpeed;
         Camera.main.fieldOfView = minFieldOfView;
@@ -39,10 +42,14 @@ public class Mouvment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(this.transform.position.y > highestHeightBeforeGround){
+            highestHeightBeforeGround = this.transform.position.y ;
+        }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         isTrampoline = Physics.CheckSphere(groundCheck.position, groundDistance, trampoMask);
         if(isGrounded){
-            
+            highestHeightBeforeGround = 0f ;
+
             if(velocity.y < zero){
                 velocity.y = constVelocity;
             }
@@ -60,14 +67,7 @@ public class Mouvment : MonoBehaviour
                 speed -= speed > minSpeed ? acceleration * breakSpeed : zero;
                 Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration * breakSpeed :zero;
             }
-        }
-
-        //Example Trampoline code
-        /*
-        if(isTrampoline){
-            velocity.y = Mathf.Sqrt(jumpHeight * 10 * -2f * gravity);
-        }
-        */
+        }        
 
         // Set ui
         speedLabel.setSpeedLabel(Mathf.Round(speed).ToString());

@@ -1,0 +1,96 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Mouvment : MonoBehaviour
+{
+    // We need to synchronize speed and FOV
+    float speed;
+    public const float minSpeed = 5f;
+    public const float maxSpeed = 15f;
+    public const float acceleration = 0.01f;
+    public const float minFieldOfView=70f;
+    public const float maxFieldOfView=100f;
+    public const float fovAcceleration = 0.03f;
+    public const float constVelocity = -2f;
+    public const float constJump = -2f;
+    public const float zero = 0;
+    public const float staminaCost = 0.1f;
+    public const float breakSpeed = 4f;
+    public stamina playerStamina;
+    public speedLabel speedLabel;
+    public CharacterController controller;
+    public float gravity = -15f;
+    public float jumpHeight = 5f;
+    public Transform groundCheck;
+
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    public LayerMask trampoMask;
+    Vector3 velocity;
+    bool isGrounded;
+    bool isTrampoline;
+    bool candoublejump;
+    private void Start() {
+        speed = minSpeed;
+        Camera.main.fieldOfView = minFieldOfView;
+        playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<stamina>();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isTrampoline = Physics.CheckSphere(groundCheck.position, groundDistance, trampoMask);
+        if(isGrounded){
+            
+            if(velocity.y < zero){
+                velocity.y = constVelocity;
+            }
+            // Sprint gestion
+            if(Input.GetButton("Fire3") && Input.GetAxis("Vertical") > zero && !playerStamina.repos){
+                speed += speed < maxSpeed ? acceleration : zero;
+                Camera.main.fieldOfView += Camera.main.fieldOfView < maxFieldOfView ? fovAcceleration:zero;
+                playerStamina.modifStamina(-staminaCost);
+            }else{
+                speed -= speed > minSpeed ? acceleration : zero;
+                Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration:zero;
+                playerStamina.modifStamina(staminaCost);
+            }
+            if(Input.GetKey("s")){
+                speed -= speed > minSpeed ? acceleration * breakSpeed : zero;
+                Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration * breakSpeed :zero;
+            }
+        }
+
+        //Example Trampoline code
+        /*
+        if(isTrampoline){
+            velocity.y = Mathf.Sqrt(jumpHeight * 10 * -2f * gravity);
+        }
+        */
+
+        // Set ui
+        speedLabel.setSpeedLabel(Mathf.Round(speed).ToString());
+        
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * speed * Time.deltaTime);
+        
+        if (Input.GetButtonDown("Jump")) {
+            if (isGrounded) {
+                velocity.y = Mathf.Sqrt(jumpHeight * constJump * gravity);
+                candoublejump = true;
+            } else {
+                if (candoublejump) {
+                candoublejump = false;
+                velocity.y = Mathf.Sqrt(jumpHeight * constJump * gravity);
+                }
+            }
+         }
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+
+    }
+}

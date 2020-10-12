@@ -8,7 +8,7 @@ public class Mouvment : MonoBehaviour
     float speed;
     public const float minSpeed = 5f;
     public const float maxSpeed = 15f;
-    public const float acceleration = 0.01f;
+    public const float acceleration = 0.03f;
     public const float minFieldOfView=70f;
     public const float maxFieldOfView=100f;
     public const float fovAcceleration = 0.03f;

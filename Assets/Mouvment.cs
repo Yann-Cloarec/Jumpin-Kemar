@@ -76,10 +76,6 @@ public class Mouvment : MonoBehaviour
             myAnimator.SetBool("isMidAir",true);
         }        
 
-        if(isTrampoline){
-            velocity.y = Mathf.Sqrt(jumpHeight*2 * constJump * gravity);            
-            candoublejump = false;
-        }
         // Set ui
         speedLabel.setSpeedLabel(Mathf.Round(speed).ToString());
         
@@ -109,15 +105,13 @@ public class Mouvment : MonoBehaviour
                 }
             }
          }
-
+        if(Input.GetKey(KeyCode.F1)){
+            myAnimator.SetBool("isDancing",true);
+        }else{
+            myAnimator.SetBool("isDancing",false);
+        }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-    }
-    private void OnControllerColliderHit(ControllerColliderHit hit) {
-        if(hit.collider.tag=="Climb"){
-            Vector3 move = transform.up*0.2f;
-            controller.Move(move * speed * Time.deltaTime);
-        }
     }
 }

@@ -1256,6 +1256,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1342,6 +1343,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSens: 200
   playerTransform: {fileID: 4516980580346537}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0ab6467ca45f94585b8a7f2b4e268e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 4281212983139273}
+  moveSpeed: 10
+  rotateSpeed: 90
 --- !u!1 &1006822867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,7 +1802,6 @@ GameObject:
   - component: {fileID: 1445203544}
   - component: {fileID: 1445203543}
   - component: {fileID: 1445203542}
-  - component: {fileID: 1445203541}
   m_Layer: 9
   m_Name: jumpingZone
   m_TagString: Untagged
@@ -1808,19 +1823,6 @@ Transform:
   m_Father: {fileID: 543450652301904650}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1445203541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445203539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f176d7c89ca969c4fa4f4e8d90fbd576, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouvment: {fileID: 0}
 --- !u!64 &1445203542
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3101,7 +3103,7 @@ MonoBehaviour:
   controller: {fileID: 1224184611172422}
   myAnimator: {fileID: 95424796495006417}
   gravity: -25
-  jumpHeight: 5
+  jumpHeight: 2
   trampoJumpHeight: 0
   groundCheck: {fileID: 1697637080}
   groundDistance: 0.4
@@ -4323,7 +4325,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224184611172421}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.82, y: 1.81, z: -17.92}
+  m_LocalPosition: {x: -5.82, y: 0, z: -17.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -4504,7 +4506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1521294682555963}
   m_LocalRotation: {x: 0.000000059604645, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -1.4901161e-10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4516980580346537}
@@ -4878,7 +4880,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 5917c0e93d180a842b61d1ebc62a195c, type: 3}
   m_Controller: {fileID: 9100000, guid: a8f2b77f3fc80aa4d991f00f79df7fe6, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 

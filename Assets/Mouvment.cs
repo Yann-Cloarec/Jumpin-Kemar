@@ -20,6 +20,7 @@ public class Mouvment : MonoBehaviour
     public stamina playerStamina;
     public speedLabel speedLabel;
     public CharacterController controller;
+    public Animator myAnimator;
     public float gravity = -15f;
     public float jumpHeight = 5f;
     public float trampoJumpHeight;
@@ -48,6 +49,7 @@ public class Mouvment : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         isTrampoline = Physics.CheckSphere(groundCheck.position, groundDistance, trampoMask);
         if(isGrounded){
+            myAnimator.SetBool("isMidAir",false);
             highestHeightBeforeGround = 0f ;
 
             if(velocity.y < zero){
@@ -55,25 +57,44 @@ public class Mouvment : MonoBehaviour
             }
             // Sprint gestion
             if(Input.GetButton("Fire3") && Input.GetAxis("Vertical") > zero && !playerStamina.repos){
+                myAnimator.SetBool("isSprint",true);
                 speed += speed < maxSpeed ? acceleration : zero;
                 Camera.main.fieldOfView += Camera.main.fieldOfView < maxFieldOfView ? fovAcceleration:zero;
                 playerStamina.modifStamina(-staminaCost);
             }else{
+                myAnimator.SetBool("isSprint",false);
                 speed -= speed > minSpeed ? acceleration : zero;
                 Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration:zero;
                 playerStamina.modifStamina(staminaCost);
             }
             if(Input.GetKey("s")){
+                myAnimator.SetBool("isSprint",false);
                 speed -= speed > minSpeed ? acceleration * breakSpeed : zero;
                 Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration * breakSpeed :zero;
             }
+        }else{
+            myAnimator.SetBool("isMidAir",true);
         }        
 
+        if(isTrampoline){
+            velocity.y = Mathf.Sqrt(jumpHeight*2 * constJump * gravity);            
+            candoublejump = false;
+        }
         // Set ui
         speedLabel.setSpeedLabel(Mathf.Round(speed).ToString());
         
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        if ( x != 0 || z > 0 ) {
+            myAnimator.SetBool("isRunning",true);
+            myAnimator.SetBool("isBackwardRunning",false);
+        }else if( z < 0){
+            myAnimator.SetBool("isRunning",false);
+            myAnimator.SetBool("isBackwardRunning",true);
+        }else{
+            myAnimator.SetBool("isRunning",false);
+            myAnimator.SetBool("isBackwardRunning",false);
+        }
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
         
@@ -92,5 +113,11 @@ public class Mouvment : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
+        if(hit.collider.tag=="Climb"){
+            Vector3 move = transform.up*0.2f;
+            controller.Move(move * speed * Time.deltaTime);
+        }
     }
 }

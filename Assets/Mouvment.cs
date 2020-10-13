@@ -24,6 +24,8 @@ public class Mouvment : MonoBehaviour
     public float gravity = -15f;
     public float jumpHeight = 5f;
     public float trampoJumpHeight;
+    public Vector3 checkpoint;
+    public Vector3 spawn;
 
     public Transform groundCheck;
 
@@ -113,5 +115,35 @@ public class Mouvment : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+        //Respawn the user to the latest checkpoint
+        if (Input.GetKey(KeyCode.E))
+        {
+            RespawnCheckPoint();
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Respawn();
+        }
+    }
+
+    private void RespawnCheckPoint()
+    {
+        controller.transform.position = checkpoint;
+    }
+
+    private void Respawn()
+    {
+        controller.transform.position = spawn;
+    }
+
+    public void SetSpawn(Vector3 newSpawn)
+    {
+        spawn = newSpawn;
+    }
+
+    public void SetCheckpoint(Vector3 newCheckpoint)
+    {
+        checkpoint = newCheckpoint;
     }
 }

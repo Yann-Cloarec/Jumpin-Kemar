@@ -47,6 +47,7 @@ public class Mouvment : MonoBehaviour
             highestHeightBeforeGround = this.transform.position.y ;
         }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
         isTrampoline = Physics.CheckSphere(groundCheck.position, groundDistance, trampoMask);
         if(isGrounded){
             myAnimator.SetBool("isMidAir",false);

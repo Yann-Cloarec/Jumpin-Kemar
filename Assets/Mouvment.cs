@@ -131,11 +131,13 @@ public class Mouvment : MonoBehaviour
         //Respawn the user to the latest checkpoint
         if (Input.GetKey(KeyCode.E))
         {
+            playerStamina.resetStamina();
             RespawnCheckPoint();
         }
 
         if (Input.GetKey(KeyCode.R))
         {
+            playerStamina.resetStamina();
             Respawn();
         }
     }

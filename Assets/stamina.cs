@@ -37,4 +37,9 @@ public class stamina : MonoBehaviour
         }
     }
 
+    public void resetStamina()
+    {
+        curStamina = maxStamina;
+    }
+
 }

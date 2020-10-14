@@ -63,6 +63,6 @@ public class carMoove : MonoBehaviour
                 car.transform.position = new Vector3(x_start_position, y_start_position, z_start_position);
                 car.SetActive(true);
 
-            }
+         }
     }
 }

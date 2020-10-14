@@ -9,7 +9,7 @@ public class Mouvment : MonoBehaviour
     bool willBounce = false;
     public const float minSpeed = 5f;
     public const float maxSpeed = 15f;
-    public const float acceleration = 0.03f;
+    public float acceleration = 0.01f;
     public const float minFieldOfView=70f;
     public const float maxFieldOfView=100f;
     public const float fovAcceleration = 0.03f;
@@ -28,19 +28,23 @@ public class Mouvment : MonoBehaviour
     public Vector3 checkpoint;
     public Vector3 spawn;
 
+    public static Mouvment mouvmentInstance;
+
     public Transform groundCheck;
 
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     public LayerMask trampoMask;
     public Vector3 velocity;
-    public Transform player;
 
     bool isGrounded;
     bool isTrampoline;
     bool candoublejump;
     public float highestHeightBeforeGround=0f;
+    private GameObject player;
     private void Start() {
+        player = GameObject.FindGameObjectWithTag("Player");
+        mouvmentInstance = this;
         speed = minSpeed;
         Camera.main.fieldOfView = minFieldOfView;
         playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<stamina>();
@@ -97,6 +101,7 @@ public class Mouvment : MonoBehaviour
             myAnimator.SetBool("isRunning",false);
             myAnimator.SetBool("isBackwardRunning",false);
         }
+
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
         
@@ -116,17 +121,25 @@ public class Mouvment : MonoBehaviour
         }else{
             myAnimator.SetBool("isDancing",false);
         }
-        velocity.y += gravity * Time.deltaTime;
+
+        if (gravity == 0F) {
+            velocity.y = 0F;
+        } else {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        
         controller.Move(velocity * Time.deltaTime);
 
         //Respawn the user to the latest checkpoint
         if (Input.GetKey(KeyCode.E))
         {
+            playerStamina.resetStamina();
             RespawnCheckPoint();
         }
 
         if (Input.GetKey(KeyCode.R))
         {
+            playerStamina.resetStamina();
             Respawn();
         }
 
@@ -139,13 +152,13 @@ public class Mouvment : MonoBehaviour
 
     private void RespawnCheckPoint()
     {
-        controller.transform.position = checkpoint;
+        player.transform.localPosition = checkpoint;
     }
 
     public void Respawn()
     {
-        Debug.Log(spawn.ToString());
-        controller.transform.position = spawn;
+
+        player.transform.localPosition = spawn;
     }
 
     public void SetSpawn(Vector3 newSpawn)

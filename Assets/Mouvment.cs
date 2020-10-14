@@ -8,7 +8,7 @@ public class Mouvment : MonoBehaviour
     float speed;
     public const float minSpeed = 5f;
     public const float maxSpeed = 15f;
-    public const float acceleration = 0.01f;
+    public float acceleration = 0.01f;
     public const float minFieldOfView=70f;
     public const float maxFieldOfView=100f;
     public const float fovAcceleration = 0.03f;
@@ -24,6 +24,8 @@ public class Mouvment : MonoBehaviour
     public float jumpHeight = 5f;
     public float trampoJumpHeight;
 
+    public static Mouvment mouvmentInstance;
+
     public Transform groundCheck;
 
     public float groundDistance = 0.4f;
@@ -35,6 +37,7 @@ public class Mouvment : MonoBehaviour
     bool candoublejump;
     public float highestHeightBeforeGround=0f;
     private void Start() {
+        mouvmentInstance = this;
         speed = minSpeed;
         Camera.main.fieldOfView = minFieldOfView;
         playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<stamina>();
@@ -74,6 +77,7 @@ public class Mouvment : MonoBehaviour
         
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+         
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
         
@@ -89,7 +93,12 @@ public class Mouvment : MonoBehaviour
             }
          }
 
-        velocity.y += gravity * Time.deltaTime;
+        if (gravity == 0F) {
+            velocity.y = 0F;
+        } else {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
         controller.Move(velocity * Time.deltaTime);
 
     }

@@ -41,11 +41,8 @@ public class Mouvment : MonoBehaviour
     public float highestHeightBeforeGround=0f;
     private GameObject player;
     private void Start() {
-<<<<<<< HEAD
         player = GameObject.FindGameObjectWithTag("Player");
-=======
         mouvmentInstance = this;
->>>>>>> ea0c978cb16946e5bfc19018495959330c308b84
         speed = minSpeed;
         Camera.main.fieldOfView = minFieldOfView;
         playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<stamina>();

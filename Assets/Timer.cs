@@ -33,4 +33,9 @@ public class Timer : MonoBehaviour
         return this.elapsed;
     }
 
+    public void stopTimer()
+    {
+
+    }
+
 }

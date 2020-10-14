@@ -49,7 +49,6 @@ using UnityEngine;
         
         yspeep *= friction;
         transform.Translate(Vector3.forward * -yspeep);
-        Debug.Log("IsGrounded car  : "+ isGrounded);
         if(!isGrounded){
             fuel = 100;
             car.SetActive(false);

@@ -15,6 +15,7 @@ public class wallRun : MonoBehaviour
      public float JumpOffUpwardsPush = 100f;
      public float JumpOffUpwardsPushMultiplier = 1000f;
      public CharacterController controller;
+     public Mouvment mouvment;
  
      void Start()
      {
@@ -27,8 +28,8 @@ public class wallRun : MonoBehaviour
 
         var lft = transform.TransformDirection(Vector3.left);
         var rgt = transform.TransformDirection(Vector3.right);
-        var raycastLeft = Physics.Raycast(transform.position, lft, 0.4F);
-        var raycastRight = Physics.Raycast(transform.position, rgt, 0.4F);
+        var raycastLeft = Physics.Raycast(transform.position, lft, 1.8F);
+        var raycastRight = Physics.Raycast(transform.position, rgt, 1.8F);
 
 //         RaycastHit.collider doesn’t equal null? That might be a wall…
 //         RaycastHit.normal dot Vector3.Up equals 0? If yes, the two vectors are orthagonal which means the wall candidate is perpendicular to the ground. That’s a runnable wall!
@@ -36,10 +37,9 @@ public class wallRun : MonoBehaviour
 //         If we have a runnable wall, enter wall running state (otherwise, exit here and wait until next frame)
 //         RaycastHit.normal X Vector3.Up (cross product) gives us the orthagonal vector - which is the vector along the wall
 //         Tell our character to move along this vector. Do something with vertical velocity (like ignore or limit it)
-
         if(raycastLeft || raycastRight)
         {
-            Mouvment.mouvmentInstance.gravity = 0F;
+            mouvment.gravity = 0F;
             var direction = rgt;
             if (raycastLeft) {
                 direction = lft;
@@ -48,7 +48,7 @@ public class wallRun : MonoBehaviour
         }
         else
         {
-            Mouvment.mouvmentInstance.gravity = -15F;
+            mouvment.gravity = -15F;
             // UnityEngine.Debug.Log("Did Not Hit");
         }
     }

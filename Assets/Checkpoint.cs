@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Checkpoint : MonoBehaviour
 {
 
     public Mouvment player;
     private Vector3 spawn;
+    public Text checkpoint;
+    public string checkpointName;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,12 @@ public class Checkpoint : MonoBehaviour
         if(other.tag.Equals("Player"))  
         {
             player.SetCheckpoint(transform.position);
-        }
+
+            //Update text to save checkpoint's time
+            Timer timerObject = FindObjectOfType<Timer>();
+            string value = "\n" + checkpointName + " : " + timerObject.getElapsedTime();
+            Debug.Log(value);
+            checkpoint.text += value;
+        }   
     }
 }

@@ -21,7 +21,6 @@ public class mouse : MonoBehaviour
 
         // Permet de faire tourner la caméra
         playerTransform.Rotate(Vector3.up * mouseX);
-
         xRotation = Mathf.Clamp(xRotation,-90,80);
         xRotation -= mouseY;
         transform.localRotation=Quaternion.Euler(xRotation,0f,0f);

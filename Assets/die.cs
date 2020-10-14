@@ -16,15 +16,15 @@ public class die : MonoBehaviour
         spawn = playerPosition.spawn;
 
     }
-    private IEnumerator OnTriggerEnter(Collider other)
+    private IEnumerator OnTriggerEnter(Collider col)
     {
-        if (other.tag.Equals("Player"))
+        if (col.tag.Equals("Player"))
         {
             
             gameover.SetActive(true);
             yield return new WaitForSeconds(3);
             gameover.SetActive(false);
-            player.transform.position = new Vector3(0,0,0);
+            player.transform.position = spawn;
 
         }
     }

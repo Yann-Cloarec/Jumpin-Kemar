@@ -37,7 +37,9 @@ public class Mouvment : MonoBehaviour
     bool isTrampoline;
     bool candoublejump;
     public float highestHeightBeforeGround=0f;
+    private GameObject player;
     private void Start() {
+        player = GameObject.FindGameObjectWithTag("Player");
         speed = minSpeed;
         Camera.main.fieldOfView = minFieldOfView;
         playerStamina = GameObject.FindGameObjectWithTag("Player").GetComponent<stamina>();
@@ -94,6 +96,7 @@ public class Mouvment : MonoBehaviour
             myAnimator.SetBool("isRunning",false);
             myAnimator.SetBool("isBackwardRunning",false);
         }
+
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
         
@@ -130,12 +133,12 @@ public class Mouvment : MonoBehaviour
 
     private void RespawnCheckPoint()
     {
-        controller.transform.position = checkpoint;
+        player.transform.localPosition = checkpoint;
     }
 
     private void Respawn()
     {
-        controller.transform.position = spawn;
+        player.transform.localPosition = spawn;
     }
 
     public void SetSpawn(Vector3 newSpawn)

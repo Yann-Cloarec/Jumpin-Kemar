@@ -4,6 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Climb
   - Immeuble
   layers:
   - Default
@@ -16,8 +17,9 @@ TagManager:
   - 
   - Ground
   - Trampoline
+  - Climb
+  - checkpoint
   - Immeuble
-  - 
   - 
   - 
   - 

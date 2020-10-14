@@ -20,9 +20,12 @@ public class Mouvment : MonoBehaviour
     public stamina playerStamina;
     public speedLabel speedLabel;
     public CharacterController controller;
+    public Animator myAnimator;
     public float gravity = -15f;
     public float jumpHeight = 5f;
     public float trampoJumpHeight;
+    public Vector3 checkpoint;
+    public Vector3 spawn;
 
     public static Mouvment mouvmentInstance;
 
@@ -49,8 +52,10 @@ public class Mouvment : MonoBehaviour
             highestHeightBeforeGround = this.transform.position.y ;
         }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
         isTrampoline = Physics.CheckSphere(groundCheck.position, groundDistance, trampoMask);
         if(isGrounded){
+            myAnimator.SetBool("isMidAir",false);
             highestHeightBeforeGround = 0f ;
 
             if(velocity.y < zero){
@@ -58,18 +63,23 @@ public class Mouvment : MonoBehaviour
             }
             // Sprint gestion
             if(Input.GetButton("Fire3") && Input.GetAxis("Vertical") > zero && !playerStamina.repos){
+                myAnimator.SetBool("isSprint",true);
                 speed += speed < maxSpeed ? acceleration : zero;
                 Camera.main.fieldOfView += Camera.main.fieldOfView < maxFieldOfView ? fovAcceleration:zero;
                 playerStamina.modifStamina(-staminaCost);
             }else{
+                myAnimator.SetBool("isSprint",false);
                 speed -= speed > minSpeed ? acceleration : zero;
                 Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration:zero;
                 playerStamina.modifStamina(staminaCost);
             }
             if(Input.GetKey("s")){
+                myAnimator.SetBool("isSprint",false);
                 speed -= speed > minSpeed ? acceleration * breakSpeed : zero;
                 Camera.main.fieldOfView -= Camera.main.fieldOfView > minFieldOfView ? fovAcceleration * breakSpeed :zero;
             }
+        }else{
+            myAnimator.SetBool("isMidAir",true);
         }        
 
         // Set ui
@@ -77,7 +87,16 @@ public class Mouvment : MonoBehaviour
         
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-         
+        if ( x != 0 || z > 0 ) {
+            myAnimator.SetBool("isRunning",true);
+            myAnimator.SetBool("isBackwardRunning",false);
+        }else if( z < 0){
+            myAnimator.SetBool("isRunning",false);
+            myAnimator.SetBool("isBackwardRunning",true);
+        }else{
+            myAnimator.SetBool("isRunning",false);
+            myAnimator.SetBool("isBackwardRunning",false);
+        }
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
         
@@ -92,14 +111,49 @@ public class Mouvment : MonoBehaviour
                 }
             }
          }
+        if(Input.GetKey(KeyCode.F1)){
+            myAnimator.SetBool("isDancing",true);
+        }else{
+            myAnimator.SetBool("isDancing",false);
+        }
 
         if (gravity == 0F) {
             velocity.y = 0F;
         } else {
             velocity.y += gravity * Time.deltaTime;
         }
-
+        
         controller.Move(velocity * Time.deltaTime);
 
+        //Respawn the user to the latest checkpoint
+        if (Input.GetKey(KeyCode.E))
+        {
+            RespawnCheckPoint();
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Respawn();
+        }
+    }
+
+    private void RespawnCheckPoint()
+    {
+        controller.transform.position = checkpoint;
+    }
+
+    private void Respawn()
+    {
+        controller.transform.position = spawn;
+    }
+
+    public void SetSpawn(Vector3 newSpawn)
+    {
+        spawn = newSpawn;
+    }
+
+    public void SetCheckpoint(Vector3 newCheckpoint)
+    {
+        checkpoint = newCheckpoint;
     }
 }

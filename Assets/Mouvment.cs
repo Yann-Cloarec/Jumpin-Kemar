@@ -6,6 +6,7 @@ public class Mouvment : MonoBehaviour
 {
     // We need to synchronize speed and FOV
     float speed;
+    bool willBounce = false;
     public const float minSpeed = 5f;
     public const float maxSpeed = 15f;
     public const float acceleration = 0.03f;
@@ -33,6 +34,8 @@ public class Mouvment : MonoBehaviour
     public LayerMask groundMask;
     public LayerMask trampoMask;
     public Vector3 velocity;
+    public Transform player;
+
     bool isGrounded;
     bool isTrampoline;
     bool candoublejump;
@@ -126,6 +129,12 @@ public class Mouvment : MonoBehaviour
         {
             Respawn();
         }
+
+        if (willBounce)
+        {
+            velocity.y = Mathf.Sqrt((jumpHeight*6) * constJump * gravity);
+            willBounce = false;
+        }
     }
 
     private void RespawnCheckPoint()
@@ -133,8 +142,9 @@ public class Mouvment : MonoBehaviour
         controller.transform.position = checkpoint;
     }
 
-    private void Respawn()
+    public void Respawn()
     {
+        Debug.Log(spawn.ToString());
         controller.transform.position = spawn;
     }
 
@@ -147,4 +157,19 @@ public class Mouvment : MonoBehaviour
     {
         checkpoint = newCheckpoint;
     }
-}
+
+    IEnumerator OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.collider.gameObject.name.Contains("trampoline"))
+        {
+            willBounce = true;
+            hit.collider.transform.parent.gameObject.SetActive(false);
+            yield return new WaitForSeconds(5);
+
+            hit.collider.transform.parent.gameObject.SetActive(true);
+
+
+        }
+    }
+
+} 

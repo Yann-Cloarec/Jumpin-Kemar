@@ -52,7 +52,8 @@ public class Mouvment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(this.transform.position.y > highestHeightBeforeGround){
+
+        if (this.transform.position.y > highestHeightBeforeGround){
             highestHeightBeforeGround = this.transform.position.y ;
         }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -157,7 +158,8 @@ public class Mouvment : MonoBehaviour
 
     public void Respawn()
     {
-
+        Timer timerObject = FindObjectOfType<Timer>();
+        timerObject.reset();
         player.transform.localPosition = spawn;
     }
 
@@ -177,7 +179,7 @@ public class Mouvment : MonoBehaviour
         {
             willBounce = true;
             hit.collider.transform.parent.gameObject.SetActive(false);
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(3);
 
             hit.collider.transform.parent.gameObject.SetActive(true);
 

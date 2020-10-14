@@ -20,11 +20,10 @@ public class die : MonoBehaviour
     {
         if (col.tag.Equals("Player"))
         {
-            
             gameover.SetActive(true);
-            yield return new WaitForSeconds(3);
-            gameover.SetActive(false);
             player.transform.position = spawn;
+            yield return new WaitForSeconds(2);
+            gameover.SetActive(false);
 
         }
     }

@@ -2,30 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class Timer : MonoBehaviour
 {
 
     public Text text;
+    public Text timerText;
+    private float secondsCount;
+    private int minuteCount;
+    private int hourCount;
     private string elapsed = "";
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool stop = false;
 
-    // Update is called once per frame
     void Update()
     {
-        this.SetGlobalTimer();
+        UpdateTimerUI();
     }
-
-    public void SetGlobalTimer()
+    //call this on update
+    public void UpdateTimerUI()
     {
-        string currentTime = Time.time.ToString("f6");
-        elapsed = currentTime;
-        currentTime = "Timer : " + currentTime + " sec.";
-        text.text = currentTime;
+        if (!stop)
+        {
+            secondsCount += Time.deltaTime;
+            text.text = hourCount + "h:" + minuteCount + "m:" + (int)secondsCount + "s";
+            if (secondsCount >= 60)
+            {
+                minuteCount++;
+                secondsCount = 0;
+
+            }
+            else if (minuteCount >= 60)
+            {
+                hourCount++;
+                minuteCount = 0;
+            }
+
+            elapsed = text.text;
+        }
+       
     }
 
     public string getElapsedTime()
@@ -33,9 +47,22 @@ public class Timer : MonoBehaviour
         return this.elapsed;
     }
 
+    public void reset()
+    {
+        this.secondsCount = 0;
+        this.hourCount = 0;
+        this.minuteCount = 0;
+        this.stop = false;
+    }
+
     public void stopTimer()
     {
+        this.stop = true;
+    }
 
+    public void startTimer()
+    {
+        this.stop = false;
     }
 
 }

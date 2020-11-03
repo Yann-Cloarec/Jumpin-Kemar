@@ -36,6 +36,7 @@ public class Checkpoint : MonoBehaviour
             Timer timerObject = FindObjectOfType<Timer>();
             string value = "\n" + checkpointName + " : " + timerObject.getElapsedTime();
             checkpoint.text += value;
+            Destroy(this.gameObject);
         }   
     }
 }

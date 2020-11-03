@@ -11,9 +11,9 @@ private Transform myTransform;
         transform.rotation = target.rotation;
         myTransform = transform;
     }
-    void Update() {
-        myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(target.position.x,target.position.y,target.position.z), moveSpeed * Time.deltaTime);
-        //myTransform.rotation = Quaternion.RotateTowards(myTransform.rotation, target.rotation, rotateSpeed * Time.deltaTime);
+    void Update()
+    {
+        myTransform.position = Vector3.MoveTowards(myTransform.position, new Vector3(target.position.x, target.position.y, target.position.z), moveSpeed * Time.deltaTime);
+        // myTransform.rotation = Quaternion.RotateTowards(myTransform.rotation, target.rotation, rotateSpeed * Time.deltaTime);
     }
- 
 }

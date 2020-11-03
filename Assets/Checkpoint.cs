@@ -16,6 +16,7 @@ public class Checkpoint : MonoBehaviour
         player = FindObjectOfType<Mouvment>();
         player.SetSpawn(spawn);
         player.SetCheckpoint(spawn);
+        player.Respawn();
 
     }
 
@@ -34,7 +35,6 @@ public class Checkpoint : MonoBehaviour
             //Update text to save checkpoint's time
             Timer timerObject = FindObjectOfType<Timer>();
             string value = "\n" + checkpointName + " : " + timerObject.getElapsedTime();
-            Debug.Log(value);
             checkpoint.text += value;
         }   
     }

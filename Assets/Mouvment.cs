@@ -6,6 +6,7 @@ public class Mouvment : MonoBehaviour
 {
     // We need to synchronize speed and FOV
     float speed;
+    bool willBounce = false;
     public const float minSpeed = 5f;
     public const float maxSpeed = 15f;
     public float acceleration = 0.01f;
@@ -35,6 +36,7 @@ public class Mouvment : MonoBehaviour
     public LayerMask groundMask;
     public LayerMask trampoMask;
     public Vector3 velocity;
+
     bool isGrounded;
     bool isTrampoline;
     bool candoublejump;
@@ -50,7 +52,8 @@ public class Mouvment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(this.transform.position.y > highestHeightBeforeGround){
+
+        if (this.transform.position.y > highestHeightBeforeGround){
             highestHeightBeforeGround = this.transform.position.y ;
         }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -140,6 +143,12 @@ public class Mouvment : MonoBehaviour
             playerStamina.resetStamina();
             Respawn();
         }
+
+        if (willBounce)
+        {
+            velocity.y = Mathf.Sqrt((jumpHeight*6) * constJump * gravity);
+            willBounce = false;
+        }
     }
 
     private void RespawnCheckPoint()
@@ -149,6 +158,8 @@ public class Mouvment : MonoBehaviour
 
     public void Respawn()
     {
+        Timer timerObject = FindObjectOfType<Timer>();
+        timerObject.reset();
         player.transform.localPosition = spawn;
     }
 
@@ -161,4 +172,19 @@ public class Mouvment : MonoBehaviour
     {
         checkpoint = newCheckpoint;
     }
-}
+
+    IEnumerator OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.collider.gameObject.name.Contains("trampoline"))
+        {
+            willBounce = true;
+            hit.collider.transform.parent.gameObject.SetActive(false);
+            yield return new WaitForSeconds(3);
+
+            hit.collider.transform.parent.gameObject.SetActive(true);
+
+
+        }
+    }
+
+} 

@@ -40,6 +40,7 @@ public class Mouvment : MonoBehaviour
     bool isTrampoline;
     bool candoublejump;
     public float highestHeightBeforeGround=0f;
+    private bool isWinLevel = false;
     private GameObject player;
     private void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -116,12 +117,24 @@ public class Mouvment : MonoBehaviour
                 }
             }
          }
-        if(Input.GetKey(KeyCode.F1)){
+        if(Input.GetKey(KeyCode.A)){
             myAnimator.SetBool("isDancing",true);
         }else{
             myAnimator.SetBool("isDancing",false);
         }
 
+        if(Input.GetKey(KeyCode.F1)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.LoadScene("base");
+        }
+        if(Input.GetKey(KeyCode.F2)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.LoadScene("Paul_scene");
+        }
+        if(Input.GetKey(KeyCode.F3)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.LoadScene("LucasScene");
+        }
         if (gravity == 0F) {
             velocity.y = 0F;
         } else {
@@ -160,8 +173,9 @@ public class Mouvment : MonoBehaviour
         Timer timerObject = FindObjectOfType<Timer>();
         timerObject.reset();
         player.transform.localPosition = spawn;
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        this.isWinLevel = false;
+
     }
 
     public void SetSpawn(Vector3 newSpawn)
@@ -183,9 +197,12 @@ public class Mouvment : MonoBehaviour
             yield return new WaitForSeconds(3);
 
             hit.collider.transform.parent.gameObject.SetActive(true);
-
-
         }
+    }
+
+    public void winLevel()
+    {
+        this.isWinLevel = true;
     }
 
 } 

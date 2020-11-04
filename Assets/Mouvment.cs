@@ -42,6 +42,7 @@ public class Mouvment : MonoBehaviour
     bool isTrampoline;
     bool candoublejump;
     public float highestHeightBeforeGround=0f;
+    private bool isWinLevel = false;
     private GameObject player;
     private void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -129,9 +130,11 @@ public class Mouvment : MonoBehaviour
             SceneManager.LoadScene("base");
         }
         if(Input.GetKey(KeyCode.F2)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             SceneManager.LoadScene("Paul_scene");
         }
         if(Input.GetKey(KeyCode.F3)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             SceneManager.LoadScene("LucasScene");
         }
         if (gravity == 0F) {
@@ -172,6 +175,7 @@ public class Mouvment : MonoBehaviour
         Timer timerObject = FindObjectOfType<Timer>();
         timerObject.reset();
         player.transform.localPosition = spawn;
+        this.isWinLevel = false;
     }
 
     public void SetSpawn(Vector3 newSpawn)
@@ -193,9 +197,12 @@ public class Mouvment : MonoBehaviour
             yield return new WaitForSeconds(3);
 
             hit.collider.transform.parent.gameObject.SetActive(true);
-
-
         }
+    }
+
+    public void winLevel()
+    {
+        this.isWinLevel = true;
     }
 
 } 

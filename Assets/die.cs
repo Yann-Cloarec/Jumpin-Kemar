@@ -20,6 +20,8 @@ public class die : MonoBehaviour
     {
         if (col.tag.Equals("Player"))
         {
+            Timer timerObject = FindObjectOfType<Timer>();
+            timerObject.reset();
             gameover.SetActive(true);
             player.transform.position = spawn;
             yield return new WaitForSeconds(2);

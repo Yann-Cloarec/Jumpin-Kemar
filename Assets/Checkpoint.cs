@@ -37,6 +37,12 @@ public class Checkpoint : MonoBehaviour
             string value = "\n" + checkpointName + " : " + timerObject.getElapsedTime();
             checkpoint.text += value;
             Destroy(this.gameObject);
+
+            if (checkpointName.Equals("19"))
+            {
+                checkpoint.text += "\n Vous avez battue la tour infernale !";
+                Time.timeScale = 0;
+            }
         }   
     }
 }

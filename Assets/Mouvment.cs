@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class Mouvment : MonoBehaviour
 {
     // We need to synchronize speed and FOV
@@ -175,7 +173,9 @@ public class Mouvment : MonoBehaviour
         Timer timerObject = FindObjectOfType<Timer>();
         timerObject.reset();
         player.transform.localPosition = spawn;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         this.isWinLevel = false;
+
     }
 
     public void SetSpawn(Vector3 newSpawn)

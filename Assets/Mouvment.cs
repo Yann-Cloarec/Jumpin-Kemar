@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Mouvment : MonoBehaviour
 {
@@ -117,12 +118,22 @@ public class Mouvment : MonoBehaviour
                 }
             }
          }
-        if(Input.GetKey(KeyCode.F1)){
+        if(Input.GetKey(KeyCode.A)){
             myAnimator.SetBool("isDancing",true);
         }else{
             myAnimator.SetBool("isDancing",false);
         }
 
+        if(Input.GetKey(KeyCode.F1)){
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.LoadScene("base");
+        }
+        if(Input.GetKey(KeyCode.F2)){
+            SceneManager.LoadScene("Paul_scene");
+        }
+        if(Input.GetKey(KeyCode.F3)){
+            SceneManager.LoadScene("LucasScene");
+        }
         if (gravity == 0F) {
             velocity.y = 0F;
         } else {

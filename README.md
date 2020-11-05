@@ -32,3 +32,7 @@ Le but du jeu est de finir les différents niveaux.
 - SOUILLE Paul
 - BLIN Lucas
 - SOHIER Thomas
+
+# Lancer le jeu
+Pour lancer le jeu, il faut mettre les 3 scènes dans la hierarchi du niveau et n'en charger qu'une seule. Les touches F1/F2 et F3 sont pour changer de scène (respectivement "base" / "Paul_scene" / "LucasScene")
+Le jeu est en cours de développement, ces 3 scènes ont pour unique but de présenter les différentes fonctionnalités du gameplay.

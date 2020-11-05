@@ -173,7 +173,10 @@ public class Mouvment : MonoBehaviour
         Timer timerObject = FindObjectOfType<Timer>();
         timerObject.reset();
         player.transform.localPosition = spawn;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        /* 
+            Bug sur le chargement de la scene trampoline non corrigé atm
+         */
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         this.isWinLevel = false;
 
     }
